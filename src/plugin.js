@@ -10,6 +10,7 @@ const Chunk = require('webpack/lib/Chunk');
 
 const store = require('./store');
 const escapeUtil = require('./utils/escape');
+const postcss = require("postcss");
 
 module.exports = class MediaQueryPlugin {
 
@@ -64,7 +65,9 @@ module.exports = class MediaQueryPlugin {
 
                 store.getMediaKeys().forEach(mediaKey => {
 
-                    const css = store.getMedia(mediaKey);
+                    var css = store.getMedia(mediaKey);
+		    css = postcss(require("css-mqpacker")()).process(css).css;
+
                     const queries = store.getQueries(mediaKey);
 
                     // generate hash and use for [hash] within basename
