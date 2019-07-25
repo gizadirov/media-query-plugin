@@ -8,3 +8,4 @@ yarn.lock
 
 # exclude testing output
 output
+/src/.vs

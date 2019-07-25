@@ -7,6 +7,7 @@ class MediaQueryStore {
 
     constructor() {
         this.media = {};
+        this.complexMedia = {};
         this.options = {};
     }
 
@@ -20,6 +21,14 @@ class MediaQueryStore {
         if (typeof this.media[key] !== 'object') {
             this.media[key] = [];
         }
+
+        if (typeof this.complexMedia[key] !== 'object') {
+            this.complexMedia[key] = [query];
+        }
+        else if (!this.complexMedia[key].find(el => el === query)) {
+            this.complexMedia[key].push(query);
+        }
+
         this.media[key].push(data);
     }
 
@@ -37,6 +46,10 @@ class MediaQueryStore {
         const queries = this.media[key].map(data => data.query);
 
         return queries;
+    }
+
+    getComplexQuery(key) {
+        return this.complexMedia[key].join(' and ');
     }
 
     removeMediaByFilename(filename) {

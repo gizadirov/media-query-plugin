@@ -66,9 +66,9 @@ module.exports = class MediaQueryPlugin {
                 store.getMediaKeys().forEach(mediaKey => {
 
                     var css = store.getMedia(mediaKey);
-		    css = postcss(require("css-mqpacker")()).process(css).css;
+		            css = postcss(require("css-mqpacker")()).process(css).css;
 
-                    const queries = store.getQueries(mediaKey);
+                    const complexQuery = store.getComplexQuery(mediaKey);
 
                     // generate hash and use for [hash] within basename
                     const hash = interpolateName({}, `[hash:${compiler.options.output.hashDigestLength}]`, { content: css });
@@ -92,8 +92,8 @@ module.exports = class MediaQueryPlugin {
 
                     // add query to chunk data if available
                     // can be used to determine query of a chunk (html-webpack-plugin)
-                    if (queries) {
-                        chunk.query = queries[0];
+                    if (complexQuery) {
+                        chunk.query = complexQuery;
                     }
 
                     // find existing js & css files of this chunk
